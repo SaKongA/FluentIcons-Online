@@ -1,0 +1,60 @@
+name: Update Icons and Deploy
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Clone Fluent UI Icons
+        run: |
+          git clone --depth 1 https://github.com/microsoft/fluentui-system-icons.git external/fluentui-icons
+
+      - name: Build Icons Data
+        run: |
+          python build-icons-data.py external/fluentui-icons/assets
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add src/data/icons-index.json public/icons
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: auto-update icons at $(date +'%Y-%m-%d %H:%M:%S')" && git push)
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
