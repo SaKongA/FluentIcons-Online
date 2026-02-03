@@ -39,7 +39,7 @@ export const IconCard = ({ icon, onClick }: IconCardProps) => {
         <Card className={styles.iconCard} onClick={() => onClick(icon)}>
             <div className={styles.iconPreview}>
                 <img
-                    src={`/icons/${icon.folder}/SVG/${icon.icon}`}
+                    src={`${import.meta.env.BASE_URL}icons/${icon.folder}/SVG/${icon.icon}`}
                     alt={icon.name}
                     style={{ width: '32px', height: '32px' }}
                     onError={(e) => (e.currentTarget.style.visibility = 'hidden')}

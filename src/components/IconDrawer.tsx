@@ -104,7 +104,7 @@ export const IconDrawer = ({ isOpen, onOpenChange, selectedIcon, metadata, langu
         if (!selectedIcon) return "";
         const dir = ext.toUpperCase();
         const fileName = `ic_fluent_${selectedIcon.name.toLowerCase().replace(/ /g, "_")}_${size}_${style.toLowerCase()}.${ext}`;
-        return `/icons/${selectedIcon.folder}/${dir}/${fileName}`;
+        return `${import.meta.env.BASE_URL}icons/${selectedIcon.folder}/${dir}/${fileName}`;
     };
 
     const downloadFile = (ext: 'svg' | 'pdf') => {

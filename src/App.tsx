@@ -81,7 +81,7 @@ export default function App() {
     setIsDrawerOpen(true);
 
     try {
-      const response = await fetch(`/icons/${icon.folder}/metadata.json`);
+      const response = await fetch(`${import.meta.env.BASE_URL}icons/${icon.folder}/metadata.json`);
       if (response.ok) {
         const data = await response.json();
         setMetadata(data);
