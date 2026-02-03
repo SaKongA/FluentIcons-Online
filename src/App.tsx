@@ -49,7 +49,7 @@ export default function App() {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem('app-language') as Language;
     if (saved === 'en' || saved === 'zh') return saved;
-    return navigator.language.startsWith('zh') ? 'zh' : 'en';
+    return 'en';
   });
 
   useEffect(() => {
